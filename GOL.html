@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<style>
+
+body {
+    background: #2b2b2b;
+          
+    text-align: center;
+    font-family: Helvetica neue, roboto;
+}
+table{
+ border: solid lightskyblue;
+ padding: 1em;
+ background-color: lightskyblue;
+ margin-top: 10%;
+ margin-left: 33%;
+ margin-right: 25%;
+}
+
+
+ </style> 
+
+
+</head>
+
+
+<body>
+    <table id="tableBoard" height="500px" width="500px">
+    </table>  
+    <button id="play" onclick="playGame()">Play Conway's Game Of Life</button>
+
+</body>
+<script>
+    const cols = 20;
+    const tableConst = document.getElementById("tableBoard");
+    const tblBody = document.createElement("tbody");
+    const grid = createtwoArray();
+    
+    function createtwoArray(){
+        let grid = new Array(20);
+        for(let i=0; i<cols; i++){
+            grid[i] = new Array(20); 
+        }
+        return grid;
+        console.log(grid); 
+    }
+
+    function getBlankGrid(emptyGrid){
+        
+     for(let i=0; i< 20; i++){
+         let table = document.getElementById("tableBoard");
+         let newRow = document.createElement("tr");
+         table.appendChild(newRow);
+         
+         for(let j=0; j<20; j++){
+            let newCell = document.createElement("td");
+            newRow.appendChild(newCell);
+            let index = "";
+            index += i;
+            index += j;
+            newCell.id = index;
+            let randtwo = Math.floor(Math.random() * Math.floor(2));
+            if(randtwo == 1){
+                newCell.style.backgroundColor = "black";
+                emptyGrid[i][j] =1;
+            }
+            else{
+                newCell.style.backgroundColor = "white"; 
+                emptyGrid[i][j] =0;
+            }
+         }
+     }
+     return emptyGrid;
+    }
+
+    document.getElementById('play').onclick = function playGame(){
+        for(let a=0; a<20; a++){
+            for(let b=0; b<20; b++){
+                let index = "";
+                index += a;
+                index += b;
+                console.log(index);
+                let count = getNeigh(a, b);
+                if(document.getElementById(index).style.backgroundColor == "black"){
+                    if(count > 3){
+                        document.getElementById(index).style.backgroundColor = "white"; 
+                    } 
+                    if(count < 2){
+                        document.getElementById(index).style.backgroundColor = "white";
+                    } 
+                    if(count === 2 || count === 3){
+                        document.getElementById(index).style.backgroundColor = "black";
+                    } 
+                }
+                if(document.getElementById(index).style.backgroundColor == "white"){
+                    if(count === 3){
+                        document.getElementById(index).style.backgroundColor = "black"; 
+                    }
+                    if(count === 0){
+                        document.getElementById(index).style.backgroundColor = "black"; 
+                    }
+                }
+            }
+        }
+    }
+    
+  function getNeigh(i, j){
+    var count =0;
+    let index = "";
+    index += i;
+    index += j;
+    let currentCell = document.getElementById(index);
+    let upindex = "";
+    upindex += (i+1);
+    upindex += j;
+    console.log(upindex);
+    let upperCell = document.getElementById(upindex);
+    let lowerindex = "";
+    lowerindex += (i-1);
+    lowerindex += j;
+    let lowerCell = document.getElementById(lowerindex);
+    let leftindex = "";
+    leftindex += i;
+    leftindex += (j+1);
+    let leftCell = document.getElementById(leftindex);
+    let rightindex = "";
+    rightindex += i;
+    rightindex += (j-1);
+    let rightCell = document.getElementById(rightindex);
+    let upLeftindex = "";
+    upLeftindex += (i+1);
+    upLeftindex += (j+1);
+    let upperLeftCell = document.getElementById(upLeftindex);
+    let lowerLeftindex = "";
+    lowerLeftindex += (i-1);
+    lowerLeftindex += (j-1);
+    let lowerLeftCell = document.getElementById(lowerLeftindex);
+    let upRightindex = "";
+    upRightindex += (i-1);
+    upRightindex += (j+1);
+    let upRightCell = document.getElementById(upRightindex);
+    let lowerRightindex = "";
+    lowerRightindex += (i+1);
+    lowerRightindex += (j-1);
+    let lowerRightCell = document.getElementById(lowerRightindex);
+        if(upperCell != null && upperCell.style.backgroundColor == "black"){
+            count++;
+        }
+        if(lowerCell != null && lowerCell.style.backgroundColor == "black"){
+            count++;
+        }
+        if(leftCell != null && leftCell.style.backgroundColor == "black"){
+            count++;
+        }
+        if(rightCell != null && rightCell.style.backgroundColor == "black"){
+            count++;
+        }
+        if(lowerLeftCell != null && lowerLeftCell.style.backgroundColor == "black"){
+            count++;
+        }
+        if(upperLeftCell != null && upperLeftCell.style.backgroundColor == "black"){
+            count++;
+        }
+        if(upRightCell != null && upRightCell.style.backgroundColor == "black"){
+            count++;
+        }
+        if(lowerRightCell != null && lowerRightCell.style.backgroundColor == "black"){
+            count++;
+        }
+    console.log(count);
+    return count;
+    
+    }
+
+    window.onload = () =>{
+    let createdGrid = createtwoArray();
+    const displaygrid = getBlankGrid(createdGrid);
+    }
+    
+    </script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</html>
